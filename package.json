@@ -14,9 +14,11 @@
   "author": "",
   "type": "commonjs",
   "main": "index.js",
-  "scripts": {
-   "test": "playwright test --headed --project=chromium"
-  },
+
+"scripts": {
+  "test": "playwright test --headed --project=chromium --reporter=html",
+  "test-headless": "playwright test --project=chromium --reporter=html"
+},
   "dependencies": {
     "playwright": "^1.59.1"
   },
