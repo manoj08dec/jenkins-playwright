@@ -1,18 +1,19 @@
+import * as dotenv from 'dotenv';
 import { defineConfig, devices } from '@playwright/test';
+
+const environment = process.env.ENV ?? 'development';
+
+// Load shared defaults from .env, then override with environment-specific values.
+dotenv.config();
+dotenv.config({ path: `.env.${environment}` });
 
 declare const process: {
   env: {
     CI?: string;
+    ENV?: string;
+    BASE_URL?: string;
   };
 };
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -20,7 +21,7 @@ declare const process: {
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -31,8 +32,8 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    /* Base URL to use in actions like `await page.goto('/')`. */
+    baseURL: process.env.BASE_URL ?? 'https://testautomationpractice.blogspot.com/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
