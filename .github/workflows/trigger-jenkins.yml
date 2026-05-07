@@ -1,0 +1,15 @@
+name: Trigger Jenkins
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST "http://10.173.241.97:8080/job/playwright1/build?token=testtoken123"
